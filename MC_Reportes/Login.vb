@@ -69,9 +69,7 @@ Public Class Login
                 'If (LocalDao.conexionLocal(ServidorCentral)) Then 'Si existe conexion al local
                 dtTablasActualizar = ConexionDAO.Get_Tablas_Actualizar() 'Obtengo las Tablas
                 CrearXML(dtTablasActualizar)
-                'Else
-                'End If
-                'Thread.Sleep(1000)
+
                 SplashScreenManager.CloseForm()
             End If
         Else
