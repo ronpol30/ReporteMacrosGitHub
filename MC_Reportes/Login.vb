@@ -48,6 +48,27 @@ Public Class Login
     Protected Overrides Sub OnLoad(e As EventArgs)
         If (LocalDao.conexionLocal(ServidorCentral)) Then 'Si existe conexion a Central
             TipoConexion = True 'Conexion 97
+
+            Dim dtTablasActualizar As New DataTable
+            'If (LocalDao.conexionLocal(ServidorCentral)) Then 'Si existe conexion al local
+            dtTablasActualizar = ConexionDAO.Get_Tablas_Actualizar() 'Obtengo las Tablas
+            CrearXML(dtTablasActualizar)
+
+            Dim xmlConexiones As XmlReader
+            Dim dsConexiones As New DataSet
+
+            xmlConexiones = XmlReader.Create(LocalDao.RutaXML + "\MCRM_SERVIDOR_REPORTES_MACROSCEM.xml", New XmlReaderSettings())
+            dsConexiones.ReadXml(xmlConexiones)
+
+            'Verificar Conexiones y Crear XML con estado de Conexiones
+            For i = 0 To dsConexiones.Tables(0).Rows.Count - 1
+                If dsConexiones.Tables(0).Rows(i).Item("TipoServidor").ToString = 2 Then
+                    If My.Computer.Network.Ping(dsConexiones.Tables(0).Rows(i).Item("Descripcion").ToString) Then
+
+                    End If
+                End If
+            Next
+
             If Not Tools.ValidaVersion(3) Then
                 EstadoActualizacion = True
                 Dim proces As New Process()
@@ -65,12 +86,6 @@ Public Class Login
             Else
                 SplashScreenManager.ShowForm(GetType(SplashScreen1), True, True)
                 MyBase.OnLoad(e)
-                Dim dtTablasActualizar As New DataTable
-                'If (LocalDao.conexionLocal(ServidorCentral)) Then 'Si existe conexion al local
-                dtTablasActualizar = ConexionDAO.Get_Tablas_Actualizar() 'Obtengo las Tablas
-                CrearXML(dtTablasActualizar)
-
-                'Verificar Conexiones y Crear XML con estado de Conexiones
 
                 SplashScreenManager.CloseForm()
             End If
