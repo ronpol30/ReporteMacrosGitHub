@@ -429,6 +429,44 @@ Public Class Tools
             .WriteEndElement()
         End With
     End Sub
+    Shared Sub createNodeMCRM_REPORTES_MACROSCEM(ByVal IDReporteMacroscem As Integer, ByVal IDSubModulo As Integer, ByVal IDServidorReportesMacroscem As Integer, ByVal writer As XmlTextWriter)
+        With writer
+            .WriteStartElement("MCRM_REPORTES_MACROSCEM")
+#Region "DatosXML"
+            .WriteStartElement("IDReporteMacroscem")
+            .WriteString(IDReporteMacroscem)
+            .WriteEndElement()
+            .WriteStartElement("IDSubModulo")
+            .WriteString(IDSubModulo)
+            .WriteEndElement()
+            .WriteStartElement("IDServidorReportesMacroscem")
+            .WriteString(IDServidorReportesMacroscem)
+            .WriteEndElement()
+#End Region
+            .WriteEndElement()
+        End With
+    End Sub
+    Shared Sub createNodeMCRM_SERVIDOR_REPORTES_MACROSCEM(ByVal IDServidorReportesMacroscem As Integer, ByVal Descripcion As String, ByVal TipoServidor As Integer, ByVal DescripcionTipoServidor As String, ByVal writer As XmlTextWriter)
+        With writer
+            .WriteStartElement("MCRM_SERVIDOR_REPORTES_MACROSCEM")
+#Region "DatosXML"
+            .WriteStartElement("IDServidorReportesMacroscem")
+            .WriteString(IDServidorReportesMacroscem)
+            .WriteEndElement()
+            .WriteStartElement("Descripcion")
+            .WriteString(Descripcion)
+            .WriteEndElement()
+            .WriteStartElement("TipoServidor")
+            .WriteString(TipoServidor)
+            .WriteEndElement()
+            .WriteStartElement("DescripcionTipoServidor")
+            .WriteString(DescripcionTipoServidor)
+            .WriteEndElement()
+#End Region
+            .WriteEndElement()
+        End With
+    End Sub
+
     Shared Sub ExportToExcel(ByVal dt As DataTable, ByVal fileName As String, ByVal sheetName As String)
         If File.Exists(fileName) Then
             File.Delete(fileName)

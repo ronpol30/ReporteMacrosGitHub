@@ -70,6 +70,8 @@ Public Class Login
                 dtTablasActualizar = ConexionDAO.Get_Tablas_Actualizar() 'Obtengo las Tablas
                 CrearXML(dtTablasActualizar)
 
+                'Verificar Conexiones y Crear XML con estado de Conexiones
+
                 SplashScreenManager.CloseForm()
             End If
         Else
@@ -281,6 +283,34 @@ Public Class Login
                 writer.WriteStartElement("Table")
                 For j = 0 To dtDataTablasActualizar.Rows.Count - 1
                     Tools.createNodeMC_LOCAL_LIST(dtDataTablasActualizar.Rows(j).Item(0), dtDataTablasActualizar.Rows(j).Item(1), dtDataTablasActualizar.Rows(j).Item(2), dtDataTablasActualizar.Rows(j).Item(3), dtDataTablasActualizar.Rows(j).Item(4), dtDataTablasActualizar.Rows(j).Item(5), dtDataTablasActualizar.Rows(j).Item(6), dtDataTablasActualizar.Rows(j).Item(7), dtDataTablasActualizar.Rows(j).Item(8), dtDataTablasActualizar.Rows(j).Item(9), dtDataTablasActualizar.Rows(j).Item(10), dtDataTablasActualizar.Rows(j).Item(11), dtDataTablasActualizar.Rows(j).Item(12), dtDataTablasActualizar.Rows(j).Item(13), writer)
+                Next
+                writer.WriteEndElement()
+                writer.WriteEndDocument()
+                writer.Close()
+                'CrearXML(dtDataTablasActualizar, dtTablasActualizar.Rows(i).Item("Nombre")) 'evaluar
+            End If
+            If dt.Rows(i).Item("Nombre") = "MCRM_REPORTES_MACROSCEM" Then
+                Dim writer As New XmlTextWriter(LocalDao.RutaXML + "\MCRM_REPORTES_MACROSCEM.xml", System.Text.Encoding.UTF8)
+                writer.WriteStartDocument(True)
+                writer.Formatting = Formatting.Indented
+                writer.Indentation = 2
+                writer.WriteStartElement("Table")
+                For j = 0 To dtDataTablasActualizar.Rows.Count - 1
+                    Tools.createNodeMCRM_REPORTES_MACROSCEM(dtDataTablasActualizar.Rows(j).Item(0), dtDataTablasActualizar.Rows(j).Item(1), dtDataTablasActualizar.Rows(j).Item(2), writer)
+                Next
+                writer.WriteEndElement()
+                writer.WriteEndDocument()
+                writer.Close()
+                'CrearXML(dtDataTablasActualizar, dtTablasActualizar.Rows(i).Item("Nombre")) 'evaluar
+            End If
+            If dt.Rows(i).Item("Nombre") = "MCRM_SERVIDOR_REPORTES_MACROSCEM" Then
+                Dim writer As New XmlTextWriter(LocalDao.RutaXML + "\MCRM_SERVIDOR_REPORTES_MACROSCEM.xml", System.Text.Encoding.UTF8)
+                writer.WriteStartDocument(True)
+                writer.Formatting = Formatting.Indented
+                writer.Indentation = 2
+                writer.WriteStartElement("Table")
+                For j = 0 To dtDataTablasActualizar.Rows.Count - 1
+                    Tools.createNodeMCRM_SERVIDOR_REPORTES_MACROSCEM(dtDataTablasActualizar.Rows(j).Item(0), dtDataTablasActualizar.Rows(j).Item(1), dtDataTablasActualizar.Rows(j).Item(2), dtDataTablasActualizar.Rows(j).Item(3), writer)
                 Next
                 writer.WriteEndElement()
                 writer.WriteEndDocument()
