@@ -4,6 +4,8 @@ Imports DevExpress.XtraNavBar
 Imports DevExpress.LookAndFeel
 Imports System.Globalization
 Imports DevExpress.XtraBars.Ribbon
+Imports System.Xml
+
 Public Class DesktopMain
     Public Sub New()
         'Se configura la cultura de la aplicacion
@@ -12,7 +14,6 @@ Public Class DesktopMain
         DevExpress.Skins.SkinManager.EnableFormSkins()
         DevExpress.UserSkins.BonusSkins.Register()
         UserLookAndFeel.Default.SetSkinStyle(Tools.ReadAppSettings("Skin"))
-
         'Se actualiza la fuente de la aplicacion
         'DevExpress.Utils.AppearanceObject.DefaultFont = New Font(Tools.ReadAppSettings("FuenteName"), Convert.ToSingle(Tools.ReadAppSettings("FuenteSize")), CType(Tools.ReadAppSettings("FuenteStyle"), System.Drawing.FontStyle))
         LookAndFeelHelper.ForceDefaultLookAndFeelChanged()
@@ -33,9 +34,34 @@ Public Class DesktopMain
         btnFechaHora.Caption = DateTime.Now
         'Emulo entidad con dt
         'Dim dtmodulo As New DataTable
+
+        Dim dtServidoresID As New DataTable
+        With dtServidoresID.Columns
+            .Add("IDServidorReportesMacroscem", GetType(Integer))
+        End With
+
+        'Verificar Conexiones
+        Dim xmlMCRM_SERVIDOR_REPORTES_MACROSCEM As XmlReader
+        Dim ds As New DataSet
+        xmlMCRM_SERVIDOR_REPORTES_MACROSCEM = XmlReader.Create(LocalDAO.RutaXML + "\MCRM_SERVIDOR_REPORTES_MACROSCEM.xml", New XmlReaderSettings())
+        ds.ReadXml(xmlMCRM_SERVIDOR_REPORTES_MACROSCEM)
+
+        For i = 0 To ds.Tables(0).Rows.Count - 1
+            If My.Computer.Network.Ping(ds.Tables(0).Rows(i).Item("Descripcion")) And ds.Tables(0).Rows(i).Item("TipoServidor") <> 0 Then
+                If (LocalDAO.conexionLocal(ds.Tables(0).Rows(i).Item("CadenaConexion"))) Then 'Si existe conexion a Servidor
+                    dtServidoresID.Rows.Add(ds.Tables(0).Rows(i).Item("IDServidorReportesMacroscem"))
+                End If
+            End If
+        Next
+
         Dim dtsubmodulos As New DataTable
         'dtmodulo = UsuarioDao.GetModulos(UsuarioBE.idrol, 3)
-        dtsubmodulos = UsuarioDao.GetSubModulos(UsuarioBE.idrol, 3)
+        If TipoConexion Then
+            dtsubmodulos = UsuarioDao.GetSubModulos(UsuarioBE.idrol, 3)
+        Else
+            dtsubmodulos = UsuarioDao.GetSubModulos(UsuarioBE.idrol, 3) 'Si No 
+        End If
+
         'ActivaBotones(dtmodulo, dtsubmodulos) 'Activa Opciones dependiendo de los accesos
 
         ControlesDevExpress.InitRibbonControl(RibbonControl)

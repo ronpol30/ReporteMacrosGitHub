@@ -86,7 +86,6 @@ Public Class Login
             Else
                 SplashScreenManager.ShowForm(GetType(SplashScreen1), True, True)
                 MyBase.OnLoad(e)
-
                 SplashScreenManager.CloseForm()
             End If
         Else
@@ -157,7 +156,6 @@ Public Class Login
                     UsuarioBE.idrol = ds.Tables(0).Rows(i).Item("idrol")
                 End If
             Next
-            'UsuarioBE = UsuarioDAO.GetByLoginPassword(UsuarioBE.Usuario, UsuarioBE.Contrasena, TipoConexion)
             'Se carga los datos del usuario y Sistema
             If NumIntentosLogin > 3 Then
                 MessageBox.Show("Ha superado el numero de intentos de validación del usuario.Contacte con el área de sistemas.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Information)
